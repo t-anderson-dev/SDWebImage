@@ -165,7 +165,7 @@
                         completedBlock(nil, nil, SDImageCacheTypeNone, finished);
                     });
                 }
-                else if (error)
+                else if (error && !image)
                 {
                     dispatch_main_sync_safe(^
                                             {
