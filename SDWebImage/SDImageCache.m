@@ -353,19 +353,19 @@ static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week
         @autoreleasepool
         {
             UIImage *diskImage = [self diskImageForKey:key];
-            NSDictionary *metadata = [self metadataForKey:key];
+            NSDictionary *aMetadata = [self metadataForKey:key];
             if (diskImage)
             {
                 CGFloat cost = diskImage.size.height * diskImage.size.width * diskImage.scale;
                 [self.memCache setObject:diskImage forKey:key cost:cost];
             }
             if (metadata) {
-                [self.memCache setObject:metadata forKey:[key stringByAppendingString:@"_metadata"]];
+                [self.memCache setObject:aMetadata forKey:[key stringByAppendingString:@"_metadata"]];
             }
 
             dispatch_main_sync_safe(^
             {
-                doneBlock(diskImage, metadata, SDImageCacheTypeDisk);
+                doneBlock(diskImage, aMetadata, SDImageCacheTypeDisk);
             });
         }
     });
@@ -541,7 +541,7 @@ static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week
 {
     int count = 0;
     NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:self.diskCachePath];
-    for (NSString *fileName in fileEnumerator)
+    for (__unused NSString *fileName in fileEnumerator)
     {
         count += 1;
     }
